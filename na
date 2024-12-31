@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penetrratopia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #444;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: #ddd;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #444;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #000;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #444;
+            color: white;
+            margin-top: 2rem;
+        }
+
+        .search {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .search input {
+            width: 80%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .search-results {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-results div {
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background-color: #eee;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Penetrratopia</h1>
+    </header>
+
+    <nav>
+        <a href="#characters">Characters</a>
+        <a href="#scenes">Scenes</a>
+        <a href="#stories">Stories</a>
+    </nav>
+
+    <div class="container">
+        <div class="search">
+            <h2>Search</h2>
+            <input type="text" id="searchBox" placeholder="Search for characters, scenes, or stories...">
+            <div id="searchResults" class="search-results"></div>
+        </div>
+    </div>
+
+    <div class="container" id="characters">
+        <h2>Characters</h2>
+        <p>Add your characters' images and descriptions here.</p>
+        <div class="gallery">
+            <!-- Example images -->
+            <img src="example-character1.jpg" alt="Character 1">
+            <img src="example-character2.jpg" alt="Character 2">
+        </div>
+    </div>
+
+    <div class="container" id="scenes">
+        <h2>Scenes</h2>
+        <p>Add your world-building images and descriptions here.</p>
+        <div class="gallery">
+            <!-- Example images -->
+            <img src="example-scene1.jpg" alt="Scene 1">
+            <img src="example-scene2.jpg" alt="Scene 2">
+        </div>
+    </div>
+
+    <div class="container" id="stories">
+        <h2>Stories</h2>
+        <p>Write your stories or background descriptions here.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vehicula ex non sem vestibulum, eget lacinia ligula vehicula.</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Penetrratopia</p>
+    </footer>
+
+    <script>
+        const searchBox = document.getElementById('searchBox');
+        const searchResults = document.getElementById('searchResults');
+
+        const data = [
+            { type: 'Character', content: 'Character 1: A brave warrior from the east.' },
+            { type: 'Character', content: 'Character 2: A mysterious mage from the north.' },
+            { type: 'Scene', content: 'Scene 1: A serene forest at dawn.' },
+            { type: 'Scene', content: 'Scene 2: A bustling marketplace in the capital.' },
+            { type: 'Story', content: 'Story: The rise of a hero destined to unite the kingdoms.' }
+        ];
+
+        searchBox.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            searchResults.innerHTML = '';
+
+            if (query) {
+                const results = data.filter(item => item.content.toLowerCase().includes(query));
+
+                if (results.length > 0) {
+                    searchResults.classList.add('active');
+                    results.forEach(item => {
+                        const div = document.createElement('div');
+                        div.textContent = `${item.type}: ${item.content}`;
+                        searchResults.appendChild(div);
+                    });
+                } else {
+                    searchResults.classList.add('active');
+                    searchResults.innerHTML = '<div>No results found</div>';
+                }
+            } else {
+                searchResults.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
