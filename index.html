@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penetrratopia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #444;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: #ddd;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #444;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #000;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .editable {
+            padding: 0.5rem;
+            border: 1px dashed transparent;
+        }
+
+        .editable:hover {
+            border: 1px dashed #aaa;
+            background-color: #f9f9f9;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #444;
+            color: white;
+            margin-top: 2rem;
+        }
+
+        .login {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .login input {
+            padding: 0.5rem;
+            margin: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .edit-mode {
+            background-color: #fffbcc;
+        }
+
+        .add-section {
+            text-align: center;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Penetrratopia</h1>
+    </header>
+
+    <nav>
+        <a href="#characters">Characters</a>
+        <a href="#scenes">Scenes</a>
+        <a href="#stories">Stories</a>
+    </nav>
+
+    <div class="container" id="content">
+        <div id="characters">
+            <h2>Characters</h2>
+            <p class="editable" data-key="character1">Character 1: A brave warrior from the east.</p>
+            <p class="editable" data-key="character2">Character 2: A mysterious mage from the north.</p>
+        </div>
+
+        <div id="scenes">
+            <h2>Scenes</h2>
+            <p class="editable" data-key="scene1">Scene 1: A serene forest at dawn.</p>
+            <p class="editable" data-key="scene2">Scene 2: A bustling marketplace in the capital.</p>
+        </div>
+
+        <div id="stories">
+            <h2>Stories</h2>
+            <p class="editable" data-key="story1">Story: The rise of a hero destined to unite the kingdoms.</p>
+        </div>
+
+        <div class="add-section hidden" id="addSection">
+            <button onclick="addSection()">Add New Section</button>
+        </div>
+    </div>
+
+    <div class="login" id="loginForm">
+        <h2>Login to Edit</h2>
+        <input type="password" id="passwordInput" placeholder="Enter Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Penetrratopia</p>
+    </footer>
+
+    <script>
+        const password = "mysecurepassword"; // Set your password here
+
+        function login() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === password) {
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('addSection').classList.remove('hidden');
+                document.body.classList.add('edit-mode');
+                loadContent();
+            } else {
+                alert('Incorrect password!');
+            }
+        }
+
+        function loadContent() {
+            const editableElements = document.querySelectorAll('.editable');
+            editableElements.forEach(element => {
+                const savedContent = localStorage.getItem(element.dataset.key);
+                if (savedContent) {
+                    element.textContent = savedContent;
+                }
+
+                element.addEventListener('click', () => {
+                    if (document.body.classList.contains('edit-mode')) {
+                        const newValue = prompt('Edit content:', element.textContent);
+                        if (newValue !== null) {
+                            element.textContent = newValue;
+                            localStorage.setItem(element.dataset.key, newValue);
+                        }
+                    }
+                });
+            });
+        }
+
+        function addSection() {
+            const sectionName = prompt('Enter new section name:');
+            if (sectionName) {
+                const container = document.createElement('div');
+                container.innerHTML = `
+                    <div id="${sectionName.toLowerCase()}">
+                        <h2>${sectionName}</h2>
+                        <p class="editable" data-key="${sectionName.toLowerCase()}1">New content for ${sectionName}...</p>
+                    </div>
+                `;
+                document.getElementById('content').appendChild(container);
+                loadContent();
+            }
+        }
+
+        // Load content initially
+        loadContent();
+    </script>
+</body>
+</html>
